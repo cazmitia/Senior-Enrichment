@@ -20,6 +20,7 @@ app.get('/api/students', (req, res, next) => {
     .then(students => res.send(students))
 })
 
-app.listen(port, ()=> console.log(`listening on port ${port}`))
+
+app.listen(port, () => console.log(`listening on port ${port}`))
 
 initDb(true)

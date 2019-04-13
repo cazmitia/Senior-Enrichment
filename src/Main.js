@@ -3,6 +3,8 @@ import {HashRouter as Router, Route} from 'react-router-dom'
 import Campuses from './Campuses'
 import Students from './Students'
 import Navbar from './Navbar'
+import SingleCampus from './SingleCampus'
+import SingleStudent from './SingleStudent'
 import {getCampusesFromServer, getStudentsFromServer} from './store'
 import { connect } from 'react-redux';
 
@@ -19,8 +21,10 @@ class Main extends Component {
                 <h1>test</h1>
                 <Router>
                     <Navbar />
-                    <Route path='/campuses' component={Campuses} />
-                    <Route path='/students' component={Students} />
+                    <Route exact path='/campuses' component={Campuses} />
+                    <Route exact path='/students' component={Students} />
+                    <Route path='/campuses/:id' component={SingleCampus} />
+                    <Route path ='/students/:id' component={SingleStudent} />
                 </Router>
             </div>
             

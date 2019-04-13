@@ -56,7 +56,8 @@ const Student = db.define('student', {
         type: Sequelize.STRING,
         validate: {
             isUrl: true
-        }
+        },
+        defaultValue: 'https://makitweb.com/demo/broken_image/images/noimage.png'
     },
     gpa: {
         type: Sequelize.FLOAT,
@@ -74,15 +75,15 @@ const initDb = (force = false) => {
     return db.sync({force})
     .then(() => {
         return Promise.all([
-            Campus.create({name: 'School A', address: '123 Fake Street, New York, NY 10001'}), 
-            Campus.create({name: 'School B', address: '456 Fake Street, New York, NY 10001'}), 
-            Campus.create({name: 'School C', address: '789 Fake Street, New York, NY 10001'})
+            Campus.create({name: 'School A', address: '123 Fake Street, New York, NY 10001', description: 'This school is awesome!'}),
+            Campus.create({name: 'School B', address: '456 Fake Street, New York, NY 10001', description: 'This school is ok.'}),
+            Campus.create({name: 'School C', address: '789 Fake Street, New York, NY 10001', description: 'This school sucks!'})
         ])
     })
     .then(([CampusA, CampusB, CampusC]) => {
-        Promise.all(
+        Promise.all([
             Student.create({firstName: 'Charles', lastName: 'Azmitia', email: 'Charles@email.com', gpa: '4.0', campusId: CampusA.id})
-        )
+        ])
         .catch(e => console.log(e))
     })
 }
