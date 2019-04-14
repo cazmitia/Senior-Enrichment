@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
-import {HashRouter as Router, Route} from 'react-router-dom'
+import {HashRouter as Router, Route, Switch} from 'react-router-dom'
 import Campuses from './Campuses'
 import Students from './Students'
 import Navbar from './Navbar'
 import SingleCampus from './SingleCampus'
 import SingleStudent from './SingleStudent'
+import AddForm from './AddForm'
 import {getCampusesFromServer, getStudentsFromServer} from './store'
 import { connect } from 'react-redux';
 
@@ -12,7 +13,6 @@ class Main extends Component {
     
     componentDidMount() {
         Promise.all([this.props.getStudents(), this.props.getCampuses()])
-        .then(() => console.log(this.props))
     }
 
     render() {
@@ -21,10 +21,14 @@ class Main extends Component {
                 <h1>test</h1>
                 <Router>
                     <Navbar />
+                    <Switch>
                     <Route exact path='/campuses' component={Campuses} />
                     <Route exact path='/students' component={Students} />
+                    <Route exact path='/campuses/add' component={AddForm} />
+                    <Route exact path='/students/add' component={AddForm} />
                     <Route path='/campuses/:id' component={SingleCampus} />
                     <Route path ='/students/:id' component={SingleStudent} />
+                    </Switch>
                 </Router>
             </div>
             

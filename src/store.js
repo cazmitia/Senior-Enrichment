@@ -4,6 +4,7 @@ import thunkMiddleware from 'redux-thunk'
 
 const GOT_ALL_CAMPUSES = 'GOT_ALL_CAMPUSES'
 const GOT_ALL_STUDENTS = 'GOT_ALL_STUDENTS'
+
 const initialState = {campuses: [], students: []}
 
 const gotCampuses = campuses => (
@@ -41,6 +42,41 @@ export const getStudentsFromServer = () => {
     }
 }
 
+export const addNewCampus = (campus) => {
+    return dispatch => {
+        return axios.post('/api/campuses', campus)
+        .then(() => axios.get('/api/campuses'))
+        .then(response => gotCampuses(response.data))
+        .then(action => dispatch(action))
+    }
+}
+
+export const addNewStudent = (student) => {
+    return dispatch => {
+        return axios.post('/api/students', student)
+        .then(() => axios.get('/api/students'))
+        .then(response => gotStudents(response.data))
+        .then(action => dispatch(action))
+    }
+}
+
+export const deleteCampus = (campusId) => {
+    return dispatch => {
+        return axios.delete(`/api/campuses/${campusId}`)
+        .then(() => axios.get('/api/campuses'))
+        .then(response => gotCampuses(response.data))
+        .then(action => dispatch(action))
+    }
+}
+
+export const deleteStudent = (studentId) => {
+    return dispatch => {
+        return axios.delete(`/api/students/${studentId}`)
+        .then(() => axios.get('/api/students'))
+        .then(response => gotStudents(response.data))
+        .then(action => dispatch(action))
+    }
+}
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case GOT_ALL_CAMPUSES: {

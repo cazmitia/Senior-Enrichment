@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
+import {deleteCampus} from './store'
 
 class Campuses extends Component {
 
@@ -8,11 +9,12 @@ class Campuses extends Component {
         const {campuses} = this.props
         return (
             <div>
-                <h1>Campuses</h1>
+                <h1 style={{display: 'inline'}}>Campuses</h1><Link to='/campuses/add'>Add A New Campus</Link>
                 <ul>
                     {campuses.map(campus => (
                         <li key={campus.id} >
                             <Link to={`campuses/${campus.id}`} > {campus.name} <img src={campus.imageUrl} /> </Link>
+                            <button type='button' onClick={() => this.props.deleteCampus(campus.id)} >Delete</button>
                         </li>
                     ))}
                 </ul>
@@ -28,4 +30,10 @@ const mapStateToProps = (state) => (
     }
 )
 
-export default connect(mapStateToProps)(Campuses)
+const mapDispatchToProps = dispatch => (
+    {
+        deleteCampus: campusId => dispatch(deleteCampus(campusId))
+    }
+)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Campuses)
