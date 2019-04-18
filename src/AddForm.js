@@ -1,44 +1,51 @@
-import React, {Component} from 'react'
-import {addNewCampus, addNewStudent} from './store'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { addNewCampus, addNewStudent } from './store'
+import { connect } from 'react-redux'
+import { TextField, Paper, Button } from '@material-ui/core';
 
 class AddForm extends Component {
     constructor(props) {
         super(props)
-        this.state = props.location.pathname === '/campuses/add' ? {
+        this.state = props.location.pathname.includes('campuses') ? {
             name: '',
             address: ''
         } :
-        {
-            firstName: '',
-            lastName: '',
-            email: ''
-        }
+            {
+                firstName: '',
+                lastName: '',
+                email: ''
+            }
     }
     handleChange = (evt) => {
-        this.setState({[evt.target.name]: evt.target.value})
-        // console.log(this.state)
+        this.setState({ [evt.target.name]: evt.target.value })
     }
 
     handleSubmit = (evt) => {
         evt.preventDefault()
-        const addFunc = this.state.name ? this.props.addCampus : this.props.addStudent
-        //this.props.addCampus(this.state)
+        const addFunc = this.props.location.pathname.includes('campuses') ? this.props.addCampus : this.props.addStudent
         addFunc(this.state)
-        .then(() => this.props.history.push(this.state.name ? '/campuses' : '/students'))
+            .then(() => this.props.history.push(this.props.location.pathname.includes('campuses') ? '/campuses' : '/students'))
     }
     render() {
-        // console.log(this.props)
         return (
-            <form onSubmit={this.handleSubmit}>
-                {Object.keys(this.state).map(key => (
-                    <div key={key}>
-                        <label>{key === 'firstName' ? 'FIRST NAME' : key === 'lastName' ? 'LAST NAME' : key.toUpperCase()}: </label>
-                        <input type='text' name={key} value={this.state[key]} onChange={this.handleChange} />
-                    </div>
-                ))}
-                <button type='submit'>Add</button>
-            </form>
+            <Paper style={{ margin: 'auto', maxWidth: '500px' }}>
+                <form onSubmit={this.handleSubmit} style={{ marginTop: '60px', padding: '5%' }}>
+                    {Object.keys(this.state).map(key => (
+                        <TextField
+                            // style={{ margin: 'normal' }}
+                            key={key}
+                            fullWidth={true}
+                            name={key}
+                            value={this.state[key]}
+                            onChange={this.handleChange}
+                            label={key === 'firstName' ? 'FIRST NAME' : key === 'lastName' ? 'LAST NAME' : key.toUpperCase()}
+                            required={true}
+                        />
+                    ))} 
+                    <Button
+                        variaint='contained' type='submit' color='primary' >Add</Button>
+                </form>
+            </Paper>
         )
     }
 }
@@ -50,4 +57,10 @@ const mapDispatchToProps = (dispatch) => (
     }
 )
 
-export default connect(null, mapDispatchToProps)(AddForm)
+const mapStateToProps = (state) => (
+    {
+        campuses: state.campuses
+    }
+)
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddForm)

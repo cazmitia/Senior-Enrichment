@@ -53,7 +53,7 @@ export const addNewCampus = (campus) => {
 
 export const addNewStudent = (student) => {
     return dispatch => {
-        return axios.post('/api/students', student)
+        return axios[student.id ? 'put' : 'post'](`/api/students${student.id ? student.id : '' }`, student)
         .then(() => axios.get('/api/students'))
         .then(response => gotStudents(response.data))
         .then(action => dispatch(action))

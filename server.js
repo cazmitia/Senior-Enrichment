@@ -41,6 +41,13 @@ app.delete('/api/students/:id', (req, res, next) => {
     return Student.destroy({where: {id: req.params.id}})
     .then(res.sendStatus(204))
 })
+
+app.put('/api/students/:id', (req, res, next) => {
+    return Student.findByPk(req.params.id)
+    .then(student => student.update(req.body))
+    .then(student => res.send(student))
+    .catch(next)
+})
 app.listen(port, () => console.log(`listening on port ${port}`))
 
 initDb(true)

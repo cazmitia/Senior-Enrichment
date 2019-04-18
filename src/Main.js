@@ -18,16 +18,17 @@ class Main extends Component {
     render() {
         return (
             <div>
-                <h1>test</h1>
                 <Router>
-                    <Navbar />
+                    <Route component={Navbar} />
                     <Switch>
-                    <Route exact path='/campuses' component={Campuses} />
-                    <Route exact path='/students' component={Students} />
                     <Route exact path='/campuses/add' component={AddForm} />
                     <Route exact path='/students/add' component={AddForm} />
                     <Route path='/campuses/:id' component={SingleCampus} />
+                    <Route path ='/students/:id/update' component={AddForm} />
                     <Route path ='/students/:id' component={SingleStudent} />
+                    <Route exact path='/students' component={Students} />
+                    <Route exact path='/campuses' component={Campuses} />
+                    <Route exact path='/' component={Campuses} />
                     </Switch>
                 </Router>
             </div>

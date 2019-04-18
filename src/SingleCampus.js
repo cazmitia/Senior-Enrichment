@@ -1,26 +1,27 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
+import React, { Fragment } from 'react'
+import { connect } from 'react-redux'
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardMedia from '@material-ui/core/CardMedia'
+import CardContent from '@material-ui/core/CardContent'
+import Typography from '@material-ui/core/Typography'
+import Students from './Students'
 
 const SingleCampus = (props) => {
     const currentCampus = props.campuses.find(campus => campus.id === props.match.params.id * 1) || {};
-    const campusStudents = props.students.filter(student => student.campusId === props.match.params.id * 1) || []
-    console.log(currentCampus.name)
+    console.log(props)
     return (
-        <div>
-        <h1>{currentCampus.name}</h1>
-        <h6>{currentCampus.address}</h6>
-        <img src={currentCampus.imageUrl} />
-        <div>
-            {currentCampus.description}
-        </div>
-        <ul>
-            <h1>Student Directory:</h1>
-            {campusStudents.map(student => (
-                <Link to={`/students/${student.id}`} key={student.id} ><li>{student.firstName} {student.lastName}</li></Link>
-            ))}
-        </ul>
-        </div>
+        <Fragment>
+            <Card style={{ maxWidth: '800', margin: 'auto', marginTop: '60px' }}>
+                <CardHeader style={{ textAlign: 'center' }} title={currentCampus.name} />
+                <CardMedia image={currentCampus.imageUrl} style={{ height: 0, paddingTop: '80%' }} />
+                <CardContent>
+                    <Typography style={{ textAlign: 'center' }} >{currentCampus.address}</Typography>
+                    <Typography component='p'>{currentCampus.description}</Typography>
+                </CardContent>
+            </Card>
+            <Students campusId={currentCampus.id} />
+        </Fragment>
     )
 }
 
